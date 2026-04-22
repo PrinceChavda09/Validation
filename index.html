@@ -80,22 +80,21 @@
 
         /* --- 1. HOVER EFFECT (Blue Theme) --- */
         .input-box input:hover {
-            border-color: #23a6d5; /* Hover પર બ્લુ બોર્ડર */
+            border-color: #23a6d5;
         }
 
         .input-box:hover i.left {
-            color: #23a6d5; /* Hover પર બ્લુ આઇકોન */
+            color: #23a6d5;
             transform: translateY(-50%) translateX(3px);
         }
 
         /* --- 2. FOCUS/CLICK EFFECT (Pink Theme) --- */
         .input-box input:focus {
-            border-color: #c33764; /* ક્લિક કરવા પર પિંક બોર્ડર */
+            border-color: #c33764;
             background: #fff;
             box-shadow: 0 5px 15px rgba(195, 55, 100, 0.1);
         }
 
-        /* Focus થાય ત્યારે આઇકોન પિંક થશે અને Hover વાળી બ્લુ ઇફેક્ટ હટી જશે */
         .input-box input:focus ~ i.left, 
         .input-box:focus-within i.left {
             color: #c33764 !important; 
@@ -267,7 +266,7 @@
         form.addEventListener("submit", function (e) {
             e.preventDefault();
             let email = document.getElementById("email").value;
-            let valid = true; // સાદી વેલિડેશન લોજિક અંહી આવશે
+            let valid = true;
             
             if (valid) {
                 document.body.classList.add("animate-bg");
