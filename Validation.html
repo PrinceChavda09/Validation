@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Premium Creative Signup</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            background: linear-gradient(135deg, #1d2671, #c33764);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            transition: background 1s ease;
+        }
+
+        body.animate-bg {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientBG 10s ease infinite;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            width: 400px;
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            z-index: 10;
+        }
+
+        .card.expanded {
+            width: 420px;
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .input-box {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 16px 50px;
+            border-radius: 15px;
+            border: 2px solid #eee;
+            outline: none;
+            font-size: 15px;
+            transition: 0.3s ease;
+            background: #fdfdfd;
+        }
+
+        /* --- 1. HOVER EFFECT (Blue Theme) --- */
+        .input-box input:hover {
+            border-color: #23a6d5; /* Hover પર બ્લુ બોર્ડર */
+        }
+
+        .input-box:hover i.left {
+            color: #23a6d5; /* Hover પર બ્લુ આઇકોન */
+            transform: translateY(-50%) translateX(3px);
+        }
+
+        /* --- 2. FOCUS/CLICK EFFECT (Pink Theme) --- */
+        .input-box input:focus {
+            border-color: #c33764; /* ક્લિક કરવા પર પિંક બોર્ડર */
+            background: #fff;
+            box-shadow: 0 5px 15px rgba(195, 55, 100, 0.1);
+        }
+
+        /* Focus થાય ત્યારે આઇકોન પિંક થશે અને Hover વાળી બ્લુ ઇફેક્ટ હટી જશે */
+        .input-box input:focus ~ i.left, 
+        .input-box:focus-within i.left {
+            color: #c33764 !important; 
+            transform: translateY(-50%) scale(1.1) !important;
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 40%;
+            left: 50px;
+            transform: translateY(-50%);
+            font-size: 15px;
+            color: #aaa;
+            padding: 0 5px;
+            transition: 0.3s;
+            pointer-events: none;
+        }
+
+        .input-box input:focus+label,
+        .input-box input:not(:placeholder-shown)+label {
+            top: 0;
+            left: 15px;
+            font-size: 12px;
+            color: #c33764;
+            font-weight: 600;
+            background: #fff;
+            border-radius: 10px;
+            padding: 2px 8px;
+        }
+
+        .input-box i.left {
+            position: absolute;
+            top: 40%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: #999;
+            font-size: 18px;
+            transition: 0.3s;
+        }
+
+        .toggle-pass {
+            position: absolute;
+            right: 18px;
+            top: 40%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #999;
+            transition: 0.3s;
+        }
+
+        .toggle-pass:hover { color: #23a6d5; }
+        .input-box input:focus ~ .toggle-pass { color: #c33764; }
+
+        .error {
+            font-size: 11px;
+            color: #ff4d4d;
+            margin-top: 6px;
+            margin-left: 8px;
+            height: 13px;
+        }
+
+        button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #ff512f, #dd2476);
+            border: none;
+            color: white;
+            border-radius: 15px;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(221, 36, 118, 0.4);
+        }
+
+        #success-container {
+            display: none;
+            text-align: center;
+            animation: popIn 0.8s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        @keyframes popIn {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .profile-success {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 30px;
+            background: #f0f0f0;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .verified-badge {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 35px;
+            height: 35px;
+            background: #4caf50;
+            border-radius: 50%;
+            border: 4px solid #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+
+<body>
+
+    <div class="card" id="mainCard">
+        <div id="form-content">
+            <h2>Create Account</h2>
+            <form id="form">
+                <div class="input-box">
+                    <i class="fa fa-envelope left"></i>
+                    <input type="text" id="email" placeholder=" " required>
+                    <label>Email Address</label>
+                    <div id="emailError" class="error"></div>
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-lock left"></i>
+                    <input type="password" id="password" placeholder=" " required>
+                    <label>Password</label>
+                    <i class="fa fa-eye toggle-pass" onclick="toggle('password', this)"></i>
+                    <div id="passError" class="error"></div>
+                </div>
+
+                <div class="input-box">
+                    <i class="fa fa-lock left"></i>
+                    <input type="password" id="confirm" placeholder=" " required>
+                    <label>Confirm Password</label>
+                    <i class="fa fa-eye toggle-pass" onclick="toggle('confirm', this)"></i>
+                    <div id="confirmError" class="error"></div>
+                </div>
+
+                <button type="submit">Sign Up Free</button>
+            </form>
+        </div>
+
+        <div id="success-container">
+            <div class="profile-success">
+                <i class="fa fa-user" style="font-size: 60px; color: #bbb;"></i>
+                <div class="verified-badge"><i class="fa fa-check"></i></div>
+            </div>
+            <h2 style="color: #333;">Successfully Created!</h2>
+            <p style="color: #777; margin-top: 10px;">Welcome aboard, <span id="emailDisplay" style="color:#c33764; font-weight:600;"></span></p>
+        </div>
+    </div>
+
+    <script>
+        const form = document.getElementById("form");
+        const emailDisplay = document.getElementById("emailDisplay");
+
+        form.addEventListener("submit", function (e) {
+            e.preventDefault();
+            let email = document.getElementById("email").value;
+            let valid = true; // સાદી વેલિડેશન લોજિક અંહી આવશે
+            
+            if (valid) {
+                document.body.classList.add("animate-bg");
+                document.getElementById("mainCard").classList.add("expanded");
+                document.getElementById("form-content").classList.add("hidden");
+                emailDisplay.innerText = email;
+                document.getElementById("success-container").style.display = "block";
+                fireConfetti();
+            }
+        });
+
+        function toggle(id, icon) {
+            let input = document.getElementById(id);
+            if (input.type === "password") {
+                input.type = "text";
+                icon.classList.replace("fa-eye", "fa-eye-slash");
+            } else {
+                input.type = "password";
+                icon.classList.replace("fa-eye-slash", "fa-eye");
+            }
+        }
+
+        function fireConfetti() {
+            var duration = 4 * 1000;
+            var end = Date.now() + duration;
+            (function frame() {
+                confetti({ particleCount: 4, angle: 60, spread: 60, origin: { x: 0 }, colors: ['#ee7752', '#e73c7e', '#ffffff'] });
+                confetti({ particleCount: 4, angle: 120, spread: 60, origin: { x: 1 }, colors: ['#23a6d5', '#23d5ab', '#ffffff'] });
+                if (Date.now() < end) { requestAnimationFrame(frame); }
+            }());
+        }
+    </script>
+</body>
+</html>
